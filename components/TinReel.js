@@ -1,12 +1,14 @@
 import { View, Text, StyleSheet, TouchableWithoutFeedback ,Animated,Dimensions} from 'react-native'
 import React, { useEffect, useRef, useState } from 'react'
 import TinReelCard from './card/TinReelCard';
-
 export default function TinReel() {
 
     const [tinReel,setTinReel] = useState(false);
     const touchStartRef = useRef(0);
     const getWidthRef = useRef(0);
+
+    const getRef = useRef(null);
+    const windowWidth = Dimensions.get('window').width;
 
     const [location,setLocation] = useState(0);
 
@@ -25,19 +27,34 @@ export default function TinReel() {
     }  
     const transform = [
         {
-            translateX:-0//transX
+            translateX:transX
         }
     ]
     const handleTouchEnd = (e) => {
-        (((touchStartRef.current < e.nativeEvent.pageX) && (touchStartRef.current - e.nativeEvent.pageX + location <= 0) )) ? 
-        setLocation(0) : setLocation(e.nativeEvent.pageX - touchStartRef.current + location);
-        console.log(getWidthRef.current)
+        getWidthRef.current = getRef.current._children?.length * 120;
+        if(touchStartRef.current < e.nativeEvent.pageX){
+            if(location < 0){
+                if(e.nativeEvent.pageX - touchStartRef.current + location > 0){
+                    setLocation(0);
+                }
+                else{
+                    setLocation(e.nativeEvent.pageX - touchStartRef.current + location);
+                }
+            }
+            else{
+                setLocation(0);
+            }
+        }
+        else{
+            if( -1 * (e.nativeEvent.pageX - touchStartRef.current + location) < getWidthRef.current - windowWidth + 10){
+                setLocation(e.nativeEvent.pageX - touchStartRef.current + location);
+            }
+            else{
+                setLocation(-1 * (getWidthRef.current - windowWidth + 10));
+            }
+        }
     }
 
-    const onLayout=(event)=> {
-        const {width} = event.nativeEvent.layout;
-        getWidthRef.current = width;
-      }
      
   return (
     <View>
@@ -65,9 +82,10 @@ export default function TinReel() {
                 </View>
             </TouchableWithoutFeedback>
         </View>
-        <Animated.View onLayout={onLayout} onTouchStart={(e) => handleTouchStart(e)} onTouchEnd={(e) => {handleTouchEnd(e)}} style={[styles.tinReelsCardContainer,{
+        <Animated.View ref={getRef} onTouchStart={(e) => handleTouchStart(e)} onTouchEnd={(e) => {handleTouchEnd(e)}} style={[styles.tinReelsCardContainer,{
             transform
         }]}>
+            <TinReelCard />
             <TinReelCard />
             <TinReelCard />
             <TinReelCard />
@@ -108,7 +126,8 @@ const styles = StyleSheet.create({
     tinReelsCardContainer:{
         minWidth:'100%',
         height:200,
-        padding:10,
+        paddingTop:10,
+        paddingBottom:10,
         flexDirection:'row',
     }
 })

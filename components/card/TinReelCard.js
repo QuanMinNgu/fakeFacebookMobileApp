@@ -32,9 +32,9 @@ export default function TinReelCard() {
 
 const styles = StyleSheet.create({
     TinReelCardWrap:{
-        width:110,
+        width:112,
         height:'100%',
-        marginRight:8,
+        marginLeft:8,
         borderRadius:10,
         overflow:'hidden',
         zIndex:1
