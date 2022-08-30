@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, TouchableWithoutFeedback ,Animated,Dimensions} from 'react-native'
+import { View, Text, StyleSheet, TouchableWithoutFeedback ,Animated,Dimensions, Easing} from 'react-native'
 import React, { useEffect, useRef, useState } from 'react'
 import TinReelCard from './card/TinReelCard';
 export default function TinReel() {
@@ -17,8 +17,9 @@ export default function TinReel() {
     useEffect(() => {
         Animated.timing(transX,{
             toValue:location,
-            duration:400,
-            useNativeDriver:true
+            duration:250,
+            useNativeDriver:true,
+            easing:Easing.ease
         }).start();
     },[location]);
 
@@ -38,7 +39,7 @@ export default function TinReel() {
                     setLocation(0);
                 }
                 else{
-                    setLocation(e.nativeEvent.pageX - touchStartRef.current + location);
+                    setLocation(e.nativeEvent.pageX - touchStartRef.current + location - 10);
                 }
             }
             else{
@@ -47,7 +48,7 @@ export default function TinReel() {
         }
         else{
             if( -1 * (e.nativeEvent.pageX - touchStartRef.current + location) < getWidthRef.current - windowWidth + 10){
-                setLocation(e.nativeEvent.pageX - touchStartRef.current + location);
+                setLocation(e.nativeEvent.pageX - touchStartRef.current + location - 10);
             }
             else{
                 setLocation(-1 * (getWidthRef.current - windowWidth + 10));
@@ -82,9 +83,13 @@ export default function TinReel() {
                 </View>
             </TouchableWithoutFeedback>
         </View>
-        <Animated.View ref={getRef} onTouchStart={(e) => handleTouchStart(e)} onTouchEnd={(e) => {handleTouchEnd(e)}} style={[styles.tinReelsCardContainer,{
+        <Animated.View ref={getRef} onTouchStart={(e) => handleTouchStart(e)} onTouchCancel={(e) => {handleTouchEnd(e)}} style={[styles.tinReelsCardContainer,{
             transform
         }]}>
+            <TinReelCard />
+            <TinReelCard />
+            <TinReelCard />
+            <TinReelCard />
             <TinReelCard />
             <TinReelCard />
             <TinReelCard />
@@ -125,7 +130,7 @@ const styles = StyleSheet.create({
     },
     tinReelsCardContainer:{
         minWidth:'100%',
-        height:200,
+        height:220,
         paddingTop:10,
         paddingBottom:10,
         flexDirection:'row',

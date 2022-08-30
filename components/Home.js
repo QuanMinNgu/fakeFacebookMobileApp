@@ -1,4 +1,4 @@
-import { View, Text, Button, SafeAreaView, StyleSheet, NativeModules, TouchableWithoutFeedback, TextInput, Image } from 'react-native'
+import { View, Text, Button, SafeAreaView, StyleSheet, NativeModules, TouchableWithoutFeedback, TextInput, Image, ScrollView, FlatList } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { AntDesign } from '@expo/vector-icons';
 import { FontAwesome } from '@expo/vector-icons';
@@ -8,6 +8,8 @@ import { MaterialIcons } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Fontisto } from '@expo/vector-icons';
 import TinReel from './TinReel';
+import Card from './card/Card';
+import Comment from './Comment';
 
 export default function Home({navigation}) {
 
@@ -16,96 +18,114 @@ export default function Home({navigation}) {
     // },[]);
 
     const [navbar,setNavbar] = useState('home');
+    const [comment,setComment] = useState(false);
 
   return (
-    <View style={styles.container}>
-        <View style={styles.headerContainer}>
-            <View style={styles.headerBrandContainer}>
-                <Text style={styles.headerBrand}>facebook</Text>
+    <View style={{position:"relative"}}>
+        <ScrollView
+        horizontal={false}
+        howsHorizontalScrollIndicator={false}
+        showsVerticalScrollIndicator={false}
+        automaticallyAdjustContentInsets={false}
+        >
+        <View style={styles.container}>
+            <View style={styles.headerContainer}>
+                    <View style={styles.headerBrandContainer}>
+                        <Text style={styles.headerBrand}>facebook</Text>
+                    </View>
+                    <View style={styles.headerIconContainer}>
+                        <View style={styles.headerIconWrap}>
+                            <AntDesign style={{fontSize:19}} name="plus" size={24} color="black" />
+                        </View>
+                        <View style={styles.headerIconWrap}>
+                            <FontAwesome style={{fontSize:19}} name="search" size={24} color="black" />
+                        </View>
+                        <View style={styles.headerIconWrap}>
+                            <AntDesign style={{fontSize:19}} name="message1" size={24} color="black" />
+                        </View>
+                    </View>
+                </View>
+                <View style={styles.navbarContainer}>
+                    <TouchableWithoutFeedback
+                    onPress={() => {
+                        setNavbar('home');
+                    }}
+                    >
+                        <View style={navbar === 'home' ? [styles.navbarItemContainer,styles.navbarItemActiveContainer] : styles.navbarItemContainer}>
+                            <Entypo style={navbar === 'home' && styles.activeNavbarItems} name="home" size={24} color="black" />
+                        </View>
+                    </TouchableWithoutFeedback>
+                    <TouchableWithoutFeedback
+                    onPress={() => {
+                        setNavbar('user');
+                    }}
+                    >
+                        <View style={navbar === 'user' ? [styles.navbarItemContainer,styles.navbarItemActiveContainer] : styles.navbarItemContainer}>
+                            <Feather style={navbar === 'user' && styles.activeNavbarItems} name="users" size={24} color="black" />
+                        </View>
+                    </TouchableWithoutFeedback>
+                    <TouchableWithoutFeedback
+                    onPress={() => {
+                        setNavbar('tv');
+                    }}
+                    >
+                        <View style={navbar === 'tv' ? [styles.navbarItemContainer,styles.navbarItemActiveContainer] : styles.navbarItemContainer}>
+                            <MaterialIcons style={navbar === 'tv' && styles.activeNavbarItems} name="live-tv" size={24} color="black" />
+                        </View>
+                    </TouchableWithoutFeedback>
+                    <TouchableWithoutFeedback
+                    onPress={() => {
+                        setNavbar('clock');
+                    }}
+                    >
+                        <View style={navbar === 'clock' ? [styles.navbarItemContainer,styles.navbarItemActiveContainer] : styles.navbarItemContainer}>
+                            <MaterialCommunityIcons style={navbar === 'clock' && styles.activeNavbarItems} name="credit-card-clock-outline" size={24} color="black" />
+                        </View>
+                    </TouchableWithoutFeedback>
+                    <TouchableWithoutFeedback
+                    onPress={() => {
+                        setNavbar('bell');
+                    }}
+                    >
+                        <View style={navbar === 'bell' ? [styles.navbarItemContainer,styles.navbarItemActiveContainer] : styles.navbarItemContainer}>
+                            <Fontisto style={navbar === 'bell' && styles.activeNavbarItems} name="bell" size={24} color="black" />
+                        </View>
+                    </TouchableWithoutFeedback>
+                    <TouchableWithoutFeedback
+                    onPress={() => {
+                        setNavbar('bar');
+                    }}
+                    >
+                        <View style={navbar === 'bar' ? [styles.navbarItemContainer,styles.navbarItemActiveContainer] : styles.navbarItemContainer}>
+                            <FontAwesome style={navbar === 'bar' && styles.activeNavbarItems} name="bars" size={24} color="black" />
+                        </View>
+                    </TouchableWithoutFeedback>
+                </View>
+                <View style={styles.userNavbarDetailContainer}>
+                    <View style={styles.userNavbarDetailImageContainer}>
+                        <Image style={{borderRadius:50}} source={{
+                            width:40,
+                            height:40,
+                            uri:'http://i1.taimienphi.vn/tmp/cf/aut/anh-man-hinh-khoa-may-tinh-dien-thoai-sieu-dep-1.jpg'
+                        }}/>
+                    </View>
+                    <TextInput placeholderTextColor={'rgba(0,0,0,0.7)'} style={styles.userNavbarInput} placeholder='Bạn đang nghĩ gì?'/>
+                    <View style={styles.userNavbarAddPictureContainer}>
+                        <AntDesign style={{color:'green'}} name="picture" size={24} color="black" />
+                    </View>
+                </View>
+                <View style={styles.distance}></View>
+                <TinReel />
+                <View style={styles.distance2}></View>
+                <View>
+                    <Card comment={comment} setComment={setComment}/>
+                    <Card comment={comment} setComment={setComment}/>
+                    <Card comment={comment} setComment={setComment}/>
+                    <Card comment={comment} setComment={setComment} />
+                </View>
             </View>
-            <View style={styles.headerIconContainer}>
-                <View style={styles.headerIconWrap}>
-                    <AntDesign style={{fontSize:19}} name="plus" size={24} color="black" />
-                </View>
-                <View style={styles.headerIconWrap}>
-                    <FontAwesome style={{fontSize:19}} name="search" size={24} color="black" />
-                </View>
-                <View style={styles.headerIconWrap}>
-                    <AntDesign style={{fontSize:19}} name="message1" size={24} color="black" />
-                </View>
-            </View>
-        </View>
-        <View style={styles.navbarContainer}>
-            <TouchableWithoutFeedback
-            onPress={() => {
-                setNavbar('home');
-            }}
-            >
-                <View style={navbar === 'home' ? [styles.navbarItemContainer,styles.navbarItemActiveContainer] : styles.navbarItemContainer}>
-                    <Entypo style={navbar === 'home' && styles.activeNavbarItems} name="home" size={24} color="black" />
-                </View>
-            </TouchableWithoutFeedback>
-            <TouchableWithoutFeedback
-            onPress={() => {
-                setNavbar('user');
-            }}
-            >
-                <View style={navbar === 'user' ? [styles.navbarItemContainer,styles.navbarItemActiveContainer] : styles.navbarItemContainer}>
-                    <Feather style={navbar === 'user' && styles.activeNavbarItems} name="users" size={24} color="black" />
-                </View>
-            </TouchableWithoutFeedback>
-            <TouchableWithoutFeedback
-            onPress={() => {
-                setNavbar('tv');
-            }}
-            >
-                <View style={navbar === 'tv' ? [styles.navbarItemContainer,styles.navbarItemActiveContainer] : styles.navbarItemContainer}>
-                    <MaterialIcons style={navbar === 'tv' && styles.activeNavbarItems} name="live-tv" size={24} color="black" />
-                </View>
-            </TouchableWithoutFeedback>
-            <TouchableWithoutFeedback
-            onPress={() => {
-                setNavbar('clock');
-            }}
-            >
-                <View style={navbar === 'clock' ? [styles.navbarItemContainer,styles.navbarItemActiveContainer] : styles.navbarItemContainer}>
-                    <MaterialCommunityIcons style={navbar === 'clock' && styles.activeNavbarItems} name="credit-card-clock-outline" size={24} color="black" />
-                </View>
-            </TouchableWithoutFeedback>
-            <TouchableWithoutFeedback
-            onPress={() => {
-                setNavbar('bell');
-            }}
-            >
-                <View style={navbar === 'bell' ? [styles.navbarItemContainer,styles.navbarItemActiveContainer] : styles.navbarItemContainer}>
-                    <Fontisto style={navbar === 'bell' && styles.activeNavbarItems} name="bell" size={24} color="black" />
-                </View>
-            </TouchableWithoutFeedback>
-            <TouchableWithoutFeedback
-            onPress={() => {
-                setNavbar('bar');
-            }}
-            >
-                <View style={navbar === 'bar' ? [styles.navbarItemContainer,styles.navbarItemActiveContainer] : styles.navbarItemContainer}>
-                    <FontAwesome style={navbar === 'bar' && styles.activeNavbarItems} name="bars" size={24} color="black" />
-                </View>
-            </TouchableWithoutFeedback>
-        </View>
-        <View style={styles.userNavbarDetailContainer}>
-            <View style={styles.userNavbarDetailImageContainer}>
-                <Image style={{borderRadius:50}} source={{
-                    width:40,
-                    height:40,
-                    uri:'http://i1.taimienphi.vn/tmp/cf/aut/anh-man-hinh-khoa-may-tinh-dien-thoai-sieu-dep-1.jpg'
-                }}/>
-            </View>
-            <TextInput placeholderTextColor={'rgba(0,0,0,0.7)'} style={styles.userNavbarInput} placeholder='Bạn đang nghĩ gì?'/>
-            <View style={styles.userNavbarAddPictureContainer}>
-                <AntDesign style={{color:'green'}} name="picture" size={24} color="black" />
-            </View>
-        </View>
-        <View style={styles.distance}></View>
-        <TinReel />
+        </ScrollView>
+        {comment && <Comment setComment={setComment}/>}
     </View>
   )
 }
@@ -113,7 +133,6 @@ export default function Home({navigation}) {
 const styles = StyleSheet.create({
     container:{
         width:'100%',
-        minHeight:'100%',
         backgroundColor:'white',
         paddingTop:NativeModules.StatusBarManager.HEIGHT
     },
@@ -191,6 +210,11 @@ const styles = StyleSheet.create({
     distance:{
         width:'100%',
         height:10,
+        backgroundColor:'#DADFE1'
+    },
+    distance2:{
+        width:'100%',
+        height:15,
         backgroundColor:'#DADFE1'
     }
 })
