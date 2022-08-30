@@ -70,8 +70,8 @@ export default function Comment({setComment}) {
     };
 
   return (
-    <Animated.View  style={[styles.commentContainer,transform]}>
-        <View style={styles.commentWrap}>
+    <View  style={[styles.commentContainer]}>
+        <Animated.View style={[styles.commentWrap,transform]}>
             <ScrollView 
             onTouchMove={(e) => {
                 handleMove(e)
@@ -82,8 +82,8 @@ export default function Comment({setComment}) {
                 <Text style={{marginBottom:1000}}>Comment</Text>
                 <Text>Comment</Text>
             </ScrollView>
-        </View>
-    </Animated.View>
+        </Animated.View>
+    </View>
   )
 }
 
